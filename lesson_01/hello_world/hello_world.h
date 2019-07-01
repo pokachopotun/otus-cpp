@@ -1,6 +1,6 @@
 #pragma once
 
-namespace HelloWorld {
+namespace NHelloWorld {
 
     void HelloWorld();
 

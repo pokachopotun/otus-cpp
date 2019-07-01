@@ -4,8 +4,8 @@
 
 int main(int, char**) {
     
-    HelloWorld::HelloWorld();
-    std::cout << HelloWorld::GetVersion() << std::endl;
+    NHelloWorld::HelloWorld();
+    std::cout << NHelloWorld::GetVersion() << std::endl;
 
     return 0;
 }

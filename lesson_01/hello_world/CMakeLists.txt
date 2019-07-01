@@ -2,17 +2,20 @@ cmake_minimum_required(VERSION 3.2)
 
 project(hello_world VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 
-find_package(Boost COMPONENTS unit_test_fremework REQUIRED)
+find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-add_library(hello_world hello_wolrd.cpp)
+configure_file(version.h.in version.h)
+
+add_library(hello_world hello_world.cpp)
 add_executable(hello_world_ut hello_world_ut.cpp)
 
 set_target_properties(hello_world hello_world_ut PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
+
 target_include_directories(hello_world
-    PRIVATE "${CMAKE_BINARY_DIR}"
+    PRIVATE "${CMAKE_BINARY_DIR}/hello_world/"
 )
 
 set_target_properties(hello_world_ut PROPERTIES
@@ -40,3 +43,7 @@ else ()
         -Wall -Wextra -pedantic -Werror
     )
 endif()
+
+enable_testing()
+
+add_test(hello_world_ut hello_world_ut)

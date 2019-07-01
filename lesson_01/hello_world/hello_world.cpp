@@ -1,10 +1,10 @@
-#include "helloworld.h"
+#include "hello_world.h"
 
 #include <version.h>
 
 #include <iostream>
 
-namespace HelloWorld {
+namespace NHelloWorld {
 
     void HelloWorld() {
         std::cout << "Hello, World!" << std::endl;
