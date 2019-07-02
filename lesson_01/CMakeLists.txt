@@ -17,7 +17,7 @@ target_link_libraries(hello_world_cli PRIVATE
 )
 
 target_include_directories(hello_world_cli
-	PRIVATE "hello_world"
+	PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/hello_world"
 )
 
 if (MSVC)

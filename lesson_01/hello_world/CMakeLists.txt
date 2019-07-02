@@ -15,7 +15,7 @@ set_target_properties(hello_world hello_world_ut PROPERTIES
 )
 
 target_include_directories(hello_world
-    PRIVATE "${CMAKE_BINARY_DIR}/hello_world/"
+    PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 set_target_properties(hello_world_ut PROPERTIES
