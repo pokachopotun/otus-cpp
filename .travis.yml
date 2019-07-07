@@ -10,5 +10,6 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
+  - cd ..
   - chmod +x deploy.sh
   - ./deploy.sh
