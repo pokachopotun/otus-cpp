@@ -6,7 +6,6 @@
 
 using namespace std;
 
-// it is in .cpp for any reason
 class TAsyncTaskContext : public std::enable_shared_from_this<TAsyncTaskContext> {
 public:
     void KeepAlive() {
@@ -19,21 +18,52 @@ public:
     }
 };
 
-// it is in .h
-std::vector<std::thread> MakeLotsOfThreads(size_t threadCount) {
-    auto ctx = std::make_shared<TAsyncTaskContext>();
+class TContextOwner {
+public:
+    TContextOwner() 
+        : Ctx(std::make_shared<TAsyncTaskContext>())
+    {
 
-    auto&& threadFunction = [ctx = ctx.get()]() {
-        ctx->KeepAlive();
-    };
-
-    std::vector<std::thread> workers;
-    for (int i = 0; i < threadCount; i++) {
-        std::thread w(threadFunction);
-        workers.push_back(std::move(w));
     }
 
-    return workers;
+    TAsyncTaskContext* GetContext() {
+        return Ctx.get();
+    }
+
+private:
+    std::shared_ptr<TAsyncTaskContext> Ctx;
+};
+
+class TContextUser {
+public:
+    TContextUser(TAsyncTaskContext* ctx) 
+        : Ctx(ctx) 
+    {
+
+    }
+
+    std::vector<std::thread> MakeLotsOfThreads(size_t threadCount) {
+        auto&& threadFunction = [ctx = Ctx]() {
+            ctx->KeepAlive();
+        };
+
+        std::vector<std::thread> workers;
+        for (int i = 0; i < threadCount; i++) {
+            std::thread w(threadFunction);
+            workers.push_back(std::move(w));
+        }
+
+        return workers;
+    }
+
+private:
+    TAsyncTaskContext* Ctx = nullptr;
+};
+
+std::vector<std::thread> MakeLotsOfThreads(size_t threadCount) {
+    TContextOwner owner;
+    TAsyncTaskContext* ctx = owner.GetContext();
+    return TContextUser(ctx).MakeLotsOfThreads(threadCount);
 }
 
 int main() {
