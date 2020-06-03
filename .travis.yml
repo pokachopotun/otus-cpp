@@ -10,7 +10,16 @@ before_script:
 script:
 - chmod +x build.sh
 - ./build.sh
+- doxygen doxygen_config.conf
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: "./deploy.sh"
+  - provider: script
+    skip_cleanup: true
+    script: "./deploy.sh"
+  - provider: pages
+    local_dir: doxygen/html
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN # Set in the settings page of your repository, as a secure variable
+    keep_history: true
+    repo: pokachopotun/otus-cpp.github.io
+    on:
+      branch: master
