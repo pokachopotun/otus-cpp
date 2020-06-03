@@ -1,8 +1,8 @@
 sudo: required
 language: cpp
 before_script:
-- sudo add-apt-repository ppa:jonathonf/gcc
-- sudo apt-get install gcc-9
+- sudo add-apt-repository ppa:jonathonf/gcc -y
+- sudo apt-get install gcc-9 -y
 - sudo apt-get install libboost-test-dev -y
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
